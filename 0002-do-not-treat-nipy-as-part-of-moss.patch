@@ -1,0 +1,26 @@
+From ced2d7317a76d8081cf9c244317e552a75dd5830 Mon Sep 17 00:00:00 2001
+From: Igor Gnatenko <i.gnatenko.brain@gmail.com>
+Date: Thu, 5 Nov 2015 08:13:44 +0100
+Subject: [PATCH 2/2] do not treat nipy as part of moss
+
+Signed-off-by: Igor Gnatenko <i.gnatenko.brain@gmail.com>
+---
+ moss/mosaic.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/moss/mosaic.py b/moss/mosaic.py
+index 54fe59d..d78c703 100644
+--- a/moss/mosaic.py
++++ b/moss/mosaic.py
+@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
+ import nibabel as nib
+ from six import string_types
+ 
+-from .nipy import VolumeImg
++from nipy.labs.datasets import VolumeImg
+ 
+ 
+ class Mosaic(object):
+-- 
+2.6.2
+
