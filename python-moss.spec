@@ -2,7 +2,7 @@
 
 Name:           python-%{modname}
 Version:        0.3.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Assorted utilities for neuroimaging and cognitive science
 
 License:        BSD
@@ -111,25 +111,11 @@ sed -i -e '/def test_remove_by_group(self):/a \ \ \ \ \ \ \ \ from nose.plugins.
 %py3_install
 %py2_install
 
-# Rename binaries
+# Fix binaries
 pushd %{buildroot}%{_bindir}
   for mod in recon_status recon_movie check_mni_reg recon_process_stats ts_movie
   do
-    mv $mod python2-$mod
-
-    sed -i '1s|^.*$|#!/usr/bin/env %{__python2}|' python2-$mod
-    for i in $mod $mod-2 $mod-%{python2_version}
-    do
-      ln -s python2-$mod $i
-    done
-
-    cp python2-$mod python3-$mod
-    sed -i '1s|^.*$|#!/usr/bin/env %{__python3}|' python3-$mod
-
-    for i in $mod-3 $mod-%{python3_version}
-    do
-      ln -s python3-$mod $i
-    done
+    sed -i '1s|^#!.*$|#!%{__python3}|' $mod
   done
 
   # Depends on 'freeview' utility
@@ -147,48 +133,21 @@ nosetests-%{python3_version} -v || :
 %files -n python2-%{modname}
 %license LICENSE
 %doc README.md
-%{_bindir}/recon_status
-%{_bindir}/recon_status-2
-%{_bindir}/recon_status-%{python2_version}
-%{_bindir}/python2-recon_status
-%{_bindir}/recon_movie
-%{_bindir}/recon_movie-2
-%{_bindir}/recon_movie-%{python2_version}
-%{_bindir}/python2-recon_movie
-%{_bindir}/check_mni_reg
-%{_bindir}/check_mni_reg-2
-%{_bindir}/check_mni_reg-%{python2_version}
-%{_bindir}/python2-check_mni_reg
-%{_bindir}/recon_process_stats
-%{_bindir}/recon_process_stats-2
-%{_bindir}/recon_process_stats-%{python2_version}
-%{_bindir}/python2-recon_process_stats
-%{_bindir}/ts_movie
-%{_bindir}/ts_movie-2
-%{_bindir}/ts_movie-%{python2_version}
-%{_bindir}/python2-ts_movie
 %{python2_sitelib}/%{modname}*
 
 %files -n python3-%{modname}
 %license LICENSE
 %doc README.md
-%{_bindir}/recon_status-3
-%{_bindir}/recon_status-%{python3_version}
-%{_bindir}/python3-recon_status
-%{_bindir}/recon_movie-3
-%{_bindir}/recon_movie-%{python3_version}
-%{_bindir}/python3-recon_movie
-%{_bindir}/check_mni_reg-3
-%{_bindir}/check_mni_reg-%{python3_version}
-%{_bindir}/python3-check_mni_reg
-%{_bindir}/recon_process_stats-3
-%{_bindir}/recon_process_stats-%{python3_version}
-%{_bindir}/python3-recon_process_stats
-%{_bindir}/ts_movie-3
-%{_bindir}/ts_movie-%{python3_version}
-%{_bindir}/python3-ts_movie
+%{_bindir}/recon_status
+%{_bindir}/recon_movie
+%{_bindir}/check_mni_reg
+%{_bindir}/recon_process_stats
+%{_bindir}/ts_movie
 %{python3_sitelib}/%{modname}*
 
 %changelog
+* Wed Nov 25 2015 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 0.3.4-2
+- Provide only one version of binaries (py3)
+
 * Thu Nov 05 2015 Igor Gnatenko <i.gnatenko.brain@gmail.com> - 0.3.4-1
 - Initial package
